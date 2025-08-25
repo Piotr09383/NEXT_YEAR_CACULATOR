@@ -8,7 +8,8 @@
   <style>
     body { font-family: system-ui, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; flex-direction: column; position: relative; }
     .container { background: #1f2937; padding: 20px; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; margin-bottom: 20px; }
-    input, button { padding: 10px; border-radius: 8px; border: none; margin-top: 10px; }
+    .section { margin-bottom: 30px; }
+    input, button, select { padding: 10px; border-radius: 8px; border: none; margin-top: 10px; width: 100%; }
     button { background: #38bdf8; color: #03131d; font-weight: bold; cursor: pointer; }
     .result { margin-top: 15px; font-size: 1.2em; }
     .loading { margin-top: 15px; font-size: 1em; color: #94a3b8; }
@@ -16,7 +17,10 @@
     footer a { color: #38bdf8; text-decoration: none; }
     .lang-select-container { position: absolute; top: 10px; right: 10px; }
     .lang-select { padding: 5px; border-radius: 8px; border: none; }
-    .flag { width: 20px; height: 15px; vertical-align: middle; margin-right: 5px; }
+    .opinie { text-align: left; }
+    .stars { display: flex; justify-content: center; margin-top: 5px; }
+    .star { font-size: 2em; cursor: pointer; color: #aaa; }
+    .star.selected { color: #facc15; }
   </style>
 </head>
 <body>
@@ -27,10 +31,13 @@
       <option value="de">🇩🇪 Deutsch</option>
       <option value="ru">🇷🇺 Русский</option>
       <option value="zh">🇨🇳 中文</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="hi">🇮🇳 हिंदी</option>
+      <option value="es">🇪🇸 Español</option>
     </select>
   </div>
 
-  <div class="container">
+  <div class="container section" id="calculatorSection">
     <h1 id="title">Next Year</h1>
     <p id="description">Enter a year to see what comes next.</p>
     <input id="yearInput" type="number" placeholder="e.g. 2025" />
@@ -38,16 +45,30 @@
     <div id="loading" class="loading" style="display:none;">This may take a moment...</div>
     <div id="result" class="result">—</div>
   </div>
+
+  <div class="container section" id="opinieSection">
+    <div class="opinie">
+      <h3>Opinions:</h3>
+      <div class="stars" id="starRating">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+      <div id="opinieResult" style="margin-top:10px;"></div>
+      <div id="averageRating" style="margin-top:10px;">Average Rating: 0 / 5</div>
+    </div>
+  </div>
+
   <footer id="footer">
     Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>
   </footer>
+
   <script>
     const translations = {
-      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', button: 'Oblicz', loading: 'Obliczam... To może chwilę potrwać', invalid: 'Podaj poprawny, dodatni rok!', footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>' },
-      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating... This may take a moment', invalid: 'Please enter a valid positive year!', footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>' },
-      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne... Das kann einen Moment dauern', invalid: 'Bitte gib ein gültiges, positives Jahr ein!', footer: 'Möchten Sie den Ersteller unterstützen oder kontaktieren? Schreiben Sie auf Discord: <strong>drak_yt</strong>' },
-      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Рассчитать', loading: 'Вычисляю... Это может занять немного времени', invalid: 'Пожалуйста, введите правильный положительный год!', footer: 'Хотите поддержать или связаться с автором? Напишите в Discord: <strong>drak_yt</strong>' },
-      zh: { title: '下一年', description: '输入年份以查看下一年。', button: '计算', loading: '正在计算... 这可能需要一点时间', invalid: '请输入有效的正数年份！', footer: '想支持或联系作者？在 Discord 上联系：<strong>drak_yt</strong>' }
+      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', button: 'Oblicz', loading: 'Obliczam... To może chwilę potrwać', invalid: 'Podaj poprawny, dodatni rok!', footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>', opinieThanks: 'Dziękujemy za opinię!' },
+      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating... This may take a moment', invalid: 'Please enter a valid positive year!', footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>', opinieThanks: 'Thank you for your opinion!' }
     };
 
     const langSelect = document.getElementById('langSelect');
@@ -58,29 +79,54 @@
     const result = document.getElementById('result');
     const footer = document.getElementById('footer');
     const input = document.getElementById('yearInput');
+    const stars = document.querySelectorAll('.star');
+    const opinieResult = document.getElementById('opinieResult');
+    const averageRatingDiv = document.getElementById('averageRating');
 
-    function applyLanguage(lang) {
-      const t = translations[lang];
-      title.textContent = t.title;
-      description.textContent = t.description;
-      button.textContent = t.button;
-      loading.textContent = t.loading;
-      footer.innerHTML = t.footer;
-      input.placeholder = lang === 'pl' ? 'np. 2025' : 'e.g. 2025';
-    }
+    let selectedRating = 0;
+    let allRatings = [];
+    let ratingSubmitted = false;
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        if (ratingSubmitted) return;
+
+        selectedRating = parseInt(star.getAttribute('data-value'));
+        stars.forEach(s => { s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= selectedRating); });
+        const lang = langSelect.value;
+        const t = translations[lang] || translations['en'];
+        opinieResult.textContent = t.opinieThanks + ' (' + selectedRating + '/5)';
+
+        allRatings.push(selectedRating);
+        const sum = allRatings.reduce((a,b) => a+b, 0);
+        const avg = (sum / allRatings.length).toFixed(2);
+        averageRatingDiv.textContent = 'Average Rating: ' + avg + ' / 5';
+
+        ratingSubmitted = true;
+      });
+    });
 
     langSelect.addEventListener('change', () => { applyLanguage(langSelect.value); });
 
     button.addEventListener('click', () => {
       const year = parseInt(input.value.trim());
       const lang = langSelect.value;
-      const t = translations[lang];
+      const t = translations[lang] || translations['en'];
       if (isNaN(year) || year < 0) { result.textContent = t.invalid; return; }
       loading.style.display = 'block';
       loading.textContent = t.loading;
       result.textContent = '—';
       setTimeout(() => { loading.style.display = 'none'; result.textContent = year + 1; }, 3000);
     });
+
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations['en'];
+      title.textContent = t.title;
+      description.textContent = t.description;
+      button.textContent = t.button;
+      loading.textContent = t.loading;
+      footer.innerHTML = t.footer;
+    }
 
     applyLanguage('en');
     langSelect.value = 'en';
