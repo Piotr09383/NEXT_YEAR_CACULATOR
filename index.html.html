@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Next Year Calculator</title>
+  <meta name="description" content="Simple website that calculates the next year based on the input year." />
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; flex-direction: column; position: relative; }
+    .container { background: #1f2937; padding: 20px; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; margin-bottom: 20px; }
+    input, button { padding: 10px; border-radius: 8px; border: none; margin-top: 10px; }
+    button { background: #38bdf8; color: #03131d; font-weight: bold; cursor: pointer; }
+    .result { margin-top: 15px; font-size: 1.2em; }
+    .loading { margin-top: 15px; font-size: 1em; color: #94a3b8; }
+    footer { font-size: 0.9em; color: #94a3b8; text-align: center; }
+    footer a { color: #38bdf8; text-decoration: none; }
+    .lang-select-container { position: absolute; top: 10px; right: 10px; }
+    .lang-select { padding: 5px; border-radius: 8px; border: none; }
+    .flag { width: 20px; height: 15px; vertical-align: middle; margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <div class="lang-select-container">
+    <select class="lang-select" id="langSelect">
+      <option value="en">🇬🇧 English</option>
+      <option value="pl">🇵🇱 Polski</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="zh">🇨🇳 中文</option>
+    </select>
+  </div>
+
+  <div class="container">
+    <h1 id="title">Next Year</h1>
+    <p id="description">Enter a year to see what comes next.</p>
+    <input id="yearInput" type="number" placeholder="e.g. 2025" />
+    <button id="calcBtn">Calculate</button>
+    <div id="loading" class="loading" style="display:none;">This may take a moment...</div>
+    <div id="result" class="result">—</div>
+  </div>
+  <footer id="footer">
+    Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>
+  </footer>
+  <script>
+    const translations = {
+      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', button: 'Oblicz', loading: 'Obliczam... To może chwilę potrwać', invalid: 'Podaj poprawny, dodatni rok!', footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>' },
+      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating... This may take a moment', invalid: 'Please enter a valid positive year!', footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>' },
+      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne... Das kann einen Moment dauern', invalid: 'Bitte gib ein gültiges, positives Jahr ein!', footer: 'Möchten Sie den Ersteller unterstützen oder kontaktieren? Schreiben Sie auf Discord: <strong>drak_yt</strong>' },
+      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Рассчитать', loading: 'Вычисляю... Это может занять немного времени', invalid: 'Пожалуйста, введите правильный положительный год!', footer: 'Хотите поддержать или связаться с автором? Напишите в Discord: <strong>drak_yt</strong>' },
+      zh: { title: '下一年', description: '输入年份以查看下一年。', button: '计算', loading: '正在计算... 这可能需要一点时间', invalid: '请输入有效的正数年份！', footer: '想支持或联系作者？在 Discord 上联系：<strong>drak_yt</strong>' }
+    };
+
+    const langSelect = document.getElementById('langSelect');
+    const title = document.getElementById('title');
+    const description = document.getElementById('description');
+    const button = document.getElementById('calcBtn');
+    const loading = document.getElementById('loading');
+    const result = document.getElementById('result');
+    const footer = document.getElementById('footer');
+    const input = document.getElementById('yearInput');
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      title.textContent = t.title;
+      description.textContent = t.description;
+      button.textContent = t.button;
+      loading.textContent = t.loading;
+      footer.innerHTML = t.footer;
+      input.placeholder = lang === 'pl' ? 'np. 2025' : 'e.g. 2025';
+    }
+
+    langSelect.addEventListener('change', () => { applyLanguage(langSelect.value); });
+
+    button.addEventListener('click', () => {
+      const year = parseInt(input.value.trim());
+      const lang = langSelect.value;
+      const t = translations[lang];
+      if (isNaN(year) || year < 0) { result.textContent = t.invalid; return; }
+      loading.style.display = 'block';
+      loading.textContent = t.loading;
+      result.textContent = '—';
+      setTimeout(() => { loading.style.display = 'none'; result.textContent = year + 1; }, 3000);
+    });
+
+    applyLanguage('en');
+    langSelect.value = 'en';
+  </script>
+</body>
+</html>
