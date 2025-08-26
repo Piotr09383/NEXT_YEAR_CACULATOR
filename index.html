@@ -16,9 +16,31 @@
     footer a { color: #38bdf8; text-decoration: none; }
     .lang-select-container { position: absolute; top: 10px; right: 10px; }
     .lang-select { padding: 5px; border-radius: 8px; border: none; }
+    .sound-toggle { position: absolute; top: 10px; left: 10px; font-size: 28px; cursor: pointer; user-select: none; }
+
+    /* Animacja kropek ładowania */
+    .dots::after {
+      content: '';
+      display: inline-block;
+      animation: dots 1s steps(5, end) infinite;
+    }
+    @keyframes dots {
+      0% { content: ''; }
+      20% { content: '.'; }
+      40% { content: '..'; }
+      60% { content: '...'; }
+      80% { content: '....'; }
+      100% { content: ''; }
+    }
   </style>
 </head>
 <body>
+
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="muzyka.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="sound-toggle" id="soundToggle">🔊</div>
 
   <div class="lang-select-container">
     <select class="lang-select" id="langSelect">
@@ -38,7 +60,7 @@
     <p id="description">Enter a year to see what comes next.</p>
     <input id="yearInput" type="number" placeholder="e.g. 2025" />
     <button id="calcBtn">Calculate</button>
-    <div id="loading" class="loading" style="display:none;">This may take a moment...</div>
+    <div id="loading" class="loading" style="display:none;">This may take a moment</div>
     <div id="result" class="result">—</div>
   </div>
 
@@ -73,11 +95,22 @@
       const year = parseInt(input.value.trim());
       const lang = langSelect.value;
       const t = translations[lang] || translations['en'];
-      if (isNaN(year) || year < 0) { result.textContent = t.invalid; return; }
+
+      if (isNaN(year) || year < 0) {
+        result.textContent = t.invalid;
+        return;
+      }
+
       loading.style.display = 'block';
       loading.textContent = t.loading;
+      loading.classList.add('dots');
       result.textContent = '—';
-      setTimeout(() => { loading.style.display = 'none'; result.textContent = year + 1; }, 3000);
+
+      setTimeout(() => {
+        loading.style.display = 'none';
+        loading.classList.remove('dots');
+        result.textContent = year + 1;
+      }, 3000);
     });
 
     function applyLanguage(lang) {
@@ -91,6 +124,18 @@
 
     applyLanguage('en');
     langSelect.value = 'en';
+
+    // Obsługa dźwięku
+    const soundToggle = document.getElementById('soundToggle');
+    const music = document.getElementById('backgroundMusic');
+    let isMuted = false;
+
+    soundToggle.addEventListener('click', () => {
+      isMuted = !isMuted;
+      music.muted = isMuted;
+      soundToggle.textContent = isMuted ? '🔇' : '🔊';
+    });
   </script>
 </body>
 </html>
+
