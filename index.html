@@ -6,17 +6,89 @@
   <title>Next Year Calculator</title>
   <meta name="description" content="Simple website that calculates the next year based on the input year." />
   <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; flex-direction: column; position: relative; }
-    .container { background: #1f2937; padding: 20px; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; margin-bottom: 20px; }
-    input, button, select { padding: 10px; border-radius: 8px; border: none; margin-top: 10px; width: 100%; }
-    button { background: #38bdf8; color: #03131d; font-weight: bold; cursor: pointer; }
-    .result { margin-top: 15px; font-size: 1.2em; }
-    .loading { margin-top: 15px; font-size: 1em; color: #94a3b8; }
-    footer { font-size: 0.9em; color: #94a3b8; text-align: center; }
-    footer a { color: #38bdf8; text-decoration: none; }
-    .lang-select-container { position: absolute; top: 10px; right: 10px; }
-    .lang-select { padding: 5px; border-radius: 8px; border: none; }
-    .sound-toggle { position: absolute; top: 10px; left: 10px; font-size: 28px; cursor: pointer; user-select: none; }
+    body { 
+      font-family: system-ui, sans-serif; 
+      background: #0f172a; 
+      color: #e5e7eb; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      height: 100vh; 
+      margin: 0; 
+      flex-direction: column; 
+      position: relative; 
+    }
+
+    .container { 
+      background: #1f2937; 
+      padding: 20px; 
+      border-radius: 12px; 
+      max-width: 400px; 
+      width: 100%; 
+      text-align: center; 
+      margin-bottom: 20px; 
+    }
+
+    /* 🔥 NAPRAWIONE RÓWNE POLE TEKSTOWE I PRZYCISK */
+    input, button, select { 
+      padding: 10px; 
+      border-radius: 8px; 
+      border: none; 
+      margin-top: 10px; 
+      width: 100%; 
+      box-sizing: border-box; 
+      display: block;
+    }
+
+    button { 
+      background: #38bdf8; 
+      color: #03131d; 
+      font-weight: bold; 
+      cursor: pointer; 
+    }
+
+    .result { 
+      margin-top: 15px; 
+      font-size: 1.2em; 
+    }
+
+    .loading { 
+      margin-top: 15px; 
+      font-size: 1em; 
+      color: #94a3b8; 
+    }
+
+    footer { 
+      font-size: 0.9em; 
+      color: #94a3b8; 
+      text-align: center; 
+    }
+
+    footer a { 
+      color: #38bdf8; 
+      text-decoration: none; 
+    }
+
+    .lang-select-container { 
+      position: absolute; 
+      top: 10px; 
+      right: 10px; 
+    }
+
+    .lang-select { 
+      padding: 5px; 
+      border-radius: 8px; 
+      border: none; 
+    }
+
+    .sound-toggle { 
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+      font-size: 28px; 
+      cursor: pointer; 
+      user-select: none; 
+    }
 
     /* Animacja kropek ładowania */
     .dots::after {
@@ -24,6 +96,7 @@
       display: inline-block;
       animation: dots 1s steps(5, end) infinite;
     }
+
     @keyframes dots {
       0% { content: ''; }
       20% { content: '.'; }
@@ -138,4 +211,3 @@
   </script>
 </body>
 </html>
-
