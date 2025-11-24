@@ -29,7 +29,6 @@
       margin-bottom: 20px; 
     }
 
-    /* 🔥 NAPRAWIONE RÓWNE POLE TEKSTOWE I PRZYCISK */
     input, button, select { 
       padding: 10px; 
       border-radius: 8px; 
@@ -90,7 +89,6 @@
       user-select: none; 
     }
 
-    /* Animacja kropek ładowania */
     .dots::after {
       content: '';
       display: inline-block;
@@ -143,14 +141,78 @@
 
   <script>
     const translations = {
-      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', button: 'Oblicz', loading: 'Obliczam... To może chwilę potrwać', invalid: 'Podaj poprawny, dodatni rok!', footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>' },
-      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating... This may take a moment', invalid: 'Please enter a valid positive year!', footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>' },
-      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne... Bitte warten', invalid: 'Bitte gib ein gültiges, positives Jahr ein!', footer: 'Möchten Sie den Entwickler unterstützen oder kontaktieren? Schreiben Sie auf Discord: <strong>drak_yt</strong>' },
-      es: { title: 'Próximo Año', description: 'Ingresa un año para ver el siguiente.', button: 'Calcular', loading: 'Calculando... Esto puede tardar un momento', invalid: '¡Introduce un año positivo válido!', footer: '¿Quieres apoyar o contactar al creador? Escribe en Discord: <strong>drak_yt</strong>' },
-      fr: { title: 'Année Suivante', description: 'Entrez une année pour voir la suivante.', button: 'Calculer', loading: 'Calcul en cours... Cela peut prendre un moment', invalid: 'Veuillez entrer une année positive valide !', footer: 'Vous voulez soutenir ou contacter le créateur ? Écrivez sur Discord : <strong>drak_yt</strong>' },
-      hi: { title: 'अगला वर्ष', description: 'अगला वर्ष देखने के लिए एक वर्ष दर्ज करें।', button: 'गणना करें', loading: 'गणना हो रही है... इसमें कुछ समय लग सकता है', invalid: 'कृपया एक मान्य सकारात्मक वर्ष दर्ज करें!', footer: 'रचनाकार से संपर्क करना चाहते हैं? Discord पर लिखें: <strong>drak_yt</strong>' },
-      zh: { title: '下一年', description: '输入一个年份查看下一年。', button: '计算', loading: '计算中... 可能需要一点时间', invalid: '请输入有效的正年份！', footer: '想支持或联系作者？请在 Discord 上联系：<strong>drak_yt</strong>' },
-      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Посчитать', loading: 'Считаю... Это может занять некоторое время', invalid: 'Введите корректный положительный год!', footer: 'Хотите поддержать или связаться с автором? Напишите в Discord: <strong>drak_yt</strong>' }
+      pl: { 
+        title: 'Następny Rok', 
+        description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', 
+        button: 'Oblicz', 
+        loading: 'Obliczam... To może chwilę potrwać', 
+        invalid: 'Podaj poprawny, dodatni rok!',
+        answer: 'Odpowiedź to: ',
+        footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>' 
+      },
+      en: { 
+        title: 'Next Year', 
+        description: 'Enter a year to see what comes next.', 
+        button: 'Calculate', 
+        loading: 'Calculating... This may take a moment', 
+        invalid: 'Please enter a valid positive year!',
+        answer: 'The answer is: ',
+        footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>' 
+      },
+      de: { 
+        title: 'Nächstes Jahr', 
+        description: 'Gib ein Jahr ein, um das nächste zu sehen.', 
+        button: 'Berechnen', 
+        loading: 'Berechne... Bitte warten', 
+        invalid: 'Bitte gib ein gültiges, positives Jahr ein!',
+        answer: 'Die Antwort ist: ',
+        footer: 'Möchten Sie den Entwickler unterstützen oder kontaktieren? Schreiben Sie auf Discord: <strong>drak_yt</strong>' 
+      },
+      es: { 
+        title: 'Próximo Año', 
+        description: 'Ingresa un año para ver el siguiente.', 
+        button: 'Calcular', 
+        loading: 'Calculando... Esto puede tardar un momento', 
+        invalid: '¡Introduce un año positivo válido!',
+        answer: 'La respuesta es: ',
+        footer: '¿Quieres apoyar o contactar al creador? Escribe en Discord: <strong>drak_yt</strong>' 
+      },
+      fr: { 
+        title: 'Année Suivante', 
+        description: 'Entrez une année pour voir la suivante.', 
+        button: 'Calculer', 
+        loading: 'Calcul en cours... Cela peut prendre un moment', 
+        invalid: 'Veuillez entrer une année positive valide !',
+        answer: 'La réponse est : ',
+        footer: 'Vous voulez soutenir ou contacter le créateur ? Écrivez sur Discord : <strong>drak_yt</strong>' 
+      },
+      hi: { 
+        title: 'अगला वर्ष', 
+        description: 'अगला वर्ष देखने के लिए एक वर्ष दर्ज करें।', 
+        button: 'गणना करें', 
+        loading: 'गणना हो रही है... इसमें कुछ समय लग सकता है', 
+        invalid: 'कृपया एक मान्य सकारात्मक वर्ष दर्ज करें!',
+        answer: 'उत्तर है: ',
+        footer: 'रचनाकार से संपर्क करना चाहते हैं? Discord पर लिखें: <strong>drak_yt</strong>' 
+      },
+      zh: { 
+        title: '下一年', 
+        description: '输入一个年份查看下一年。', 
+        button: '计算', 
+        loading: '计算中... 可能需要一点时间', 
+        invalid: '请输入有效的正年份！',
+        answer: '答案是：',
+        footer: '想支持或联系作者？请在 Discord 上联系：<strong>drak_yt</strong>' 
+      },
+      ru: { 
+        title: 'Следующий год', 
+        description: 'Введите год, чтобы узнать следующий.', 
+        button: 'Посчитать', 
+        loading: 'Считаю... Это может занять некоторое время', 
+        invalid: 'Введите корректный положительный год!',
+        answer: 'Ответ: ',
+        footer: 'Хотите поддержать или связаться с автором? Напишите в Discord: <strong>drak_yt</strong>' 
+      }
     };
 
     const langSelect = document.getElementById('langSelect');
@@ -182,7 +244,7 @@
       setTimeout(() => {
         loading.style.display = 'none';
         loading.classList.remove('dots');
-        result.textContent = year + 1;
+        result.textContent = t.answer + (year + 1);
       }, 3000);
     });
 
@@ -198,7 +260,6 @@
     applyLanguage('en');
     langSelect.value = 'en';
 
-    // Obsługa dźwięku
     const soundToggle = document.getElementById('soundToggle');
     const music = document.getElementById('backgroundMusic');
     let isMuted = false;
@@ -209,5 +270,7 @@
       soundToggle.textContent = isMuted ? '🔇' : '🔊';
     });
   </script>
+
 </body>
 </html>
+
