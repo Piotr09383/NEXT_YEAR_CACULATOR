@@ -80,15 +80,6 @@
       border: none; 
     }
 
-    .sound-toggle { 
-      position: absolute; 
-      top: 10px; 
-      left: 10px; 
-      font-size: 28px; 
-      cursor: pointer; 
-      user-select: none; 
-    }
-
     .dots::after {
       content: '';
       display: inline-block;
@@ -106,12 +97,6 @@
   </style>
 </head>
 <body>
-
-  <audio id="backgroundMusic" autoplay loop>
-    <source src="muzyka.mp3" type="audio/mpeg">
-  </audio>
-
-  <div class="sound-toggle" id="soundToggle">🔊</div>
 
   <div class="lang-select-container">
     <select class="lang-select" id="langSelect">
@@ -259,16 +244,6 @@
 
     applyLanguage('en');
     langSelect.value = 'en';
-
-    const soundToggle = document.getElementById('soundToggle');
-    const music = document.getElementById('backgroundMusic');
-    let isMuted = false;
-
-    soundToggle.addEventListener('click', () => {
-      isMuted = !isMuted;
-      music.muted = isMuted;
-      soundToggle.textContent = isMuted ? '🔇' : '🔊';
-    });
   </script>
 
 </body>
