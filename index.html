@@ -39,7 +39,12 @@
       margin: 0; 
       flex-direction: column; 
       position: relative; 
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* Smooth theme transition */
+    body.theme-anim {
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     .container { 
@@ -50,7 +55,7 @@
       width: 100%; 
       text-align: center; 
       margin-bottom: 20px;
-      transition: background 0.3s;
+      transition: background 0.4s ease;
     }
 
     input, button, select { 
@@ -66,7 +71,7 @@
     input {
       background: var(--input-bg);
       color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     button { 
@@ -74,7 +79,7 @@
       color: var(--button-text); 
       font-weight: bold; 
       cursor: pointer; 
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     .result { 
@@ -102,7 +107,7 @@
       right: 10px; 
     }
 
-    /* THEME BUTTON - LEFT TOP */
+    /* THEME BUTTON */
     .theme-toggle {
       position: absolute;
       top: 10px;
@@ -110,11 +115,19 @@
       background: var(--container);
       color: var(--text);
       border: 2px solid var(--subtext);
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s, color 0.3s, border 0.3s;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s, color 0.3s, border 0.3s, transform 0.3s;
+    }
+
+    /* Button animation */
+    .theme-toggle.animate {
+      transform: scale(1.15) rotate(5deg);
     }
 
     .dots::after {
@@ -136,7 +149,7 @@
 <body>
 
   <!-- THEME TOGGLE BUTTON -->
-  <div class="theme-toggle" id="themeToggle">Light Mode</div>
+  <div class="theme-toggle" id="themeToggle">🌙 Dark Mode</div>
 
   <div class="lang-select-container">
     <select class="lang-select" id="langSelect">
@@ -162,17 +175,33 @@
 
   <script>
     const translations = {
-      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć następny.', button: 'Oblicz', loading: 'Obliczam...', invalid: 'Podaj poprawny rok!', answer: 'Odpowiedź to: ' },
-      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating...', invalid: 'Please enter a valid year!', answer: 'The answer is: ' },
-      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne...', invalid: 'Bitte gib ein gültiges Jahr ein!', answer: 'Die Antwort ist: ' },
-      es: { title: 'Próximo Año', description: 'Ingresa un año para ver el siguiente.', button: 'Calcular', loading: 'Calculando...', invalid: 'Introduce un año válido!', answer: 'La respuesta es: ' },
-      fr: { title: 'Année Suivante', description: 'Entrez une année pour voir la suivante.', button: 'Calculer', loading: 'Calcul en cours...', invalid: 'Entrez une année valide!', answer: 'La réponse est : ' },
-      hi: { title: 'अगला वर्ष', description: 'अगला वर्ष देखने के लिए वर्ष दर्ज करें।', button: 'गणना करें', loading: 'गणना हो रही...', invalid: 'कृपया सही वर्ष दर्ज करें!', answer: 'उत्तर है: ' },
-      zh: { title: '下一年', description: '输入一个年份查看下一年。', button: '计算', loading: '计算中...', invalid: '请输入有效年份！', answer: '答案是：' },
-      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Посчитать', loading: 'Считаю...', invalid: 'Введите корректный год!', answer: 'Ответ: ' }
+      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć następny.', button: 'Oblicz', loading: 'Obliczam...', invalid: 'Podaj poprawny rok!', answer: 'Odpowiedź to: ', 
+            themeDark: "🌙 Tryb ciemny", themeLight: "☀️ Tryb jasny" },
+
+      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating...', invalid: 'Please enter a valid year!', answer: 'The answer is: ',
+            themeDark: "🌙 Dark Mode", themeLight: "☀️ Light Mode" },
+
+      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne...', invalid: 'Bitte gib ein gültiges Jahr ein!', answer: 'Die Antwort ist: ',
+            themeDark: "🌙 Dunkelmodus", themeLight: "☀️ Hellmodus" },
+
+      es: { title: 'Próximo Año', description: 'Ingresa un año para ver el siguiente.', button: 'Calcular', loading: 'Calculando...', invalid: 'Introduce un año válido!', answer: 'La respuesta es: ',
+            themeDark: "🌙 Modo oscuro", themeLight: "☀️ Modo claro" },
+
+      fr: { title: 'Année Suivante', description: 'Entrez une année pour voir la suivante.', button: 'Calculer', loading: 'Calcul en cours...', invalid: 'Entrez une année valide!', answer: 'La réponse est : ',
+            themeDark: "🌙 Mode sombre", themeLight: "☀️ Mode clair" },
+
+      hi: { title: 'अगला वर्ष', description: 'अगला वर्ष देखने के लिए वर्ष दर्ज करें।', button: 'गणना करें', loading: 'गणना हो रही...', invalid: 'कृपया सही वर्ष दर्ज करें!', answer: 'उत्तर है: ',
+            themeDark: "🌙 डार्क मोड", themeLight: "☀️ लाइट मोड" },
+
+      zh: { title: '下一年', description: '输入一个年份查看下一年。', button: '计算', loading: '计算中...', invalid: '请输入有效年份！', answer: '答案是：',
+            themeDark: "🌙 黑暗模式", themeLight: "☀️ 亮色模式" },
+
+      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Посчитать', loading: 'Считаю...', invalid: 'Введите корректный год!', answer: 'Ответ: ',
+            themeDark: "🌙 Тёмная тема", themeLight: "☀️ Светлая тема" }
     };
 
     const langSelect = document.getElementById('langSelect');
+    const themeToggle = document.getElementById('themeToggle');
     const title = document.getElementById('title');
     const description = document.getElementById('description');
     const button = document.getElementById('calcBtn');
@@ -181,10 +210,13 @@
     const input = document.getElementById('yearInput');
 
     let lastComputedValue = null;
+    let isLight = false;
 
+    /* Apply translations */
     langSelect.addEventListener('change', () => {
       applyLanguage(langSelect.value);
       updateTranslatedResult();
+      updateThemeButtonText();
     });
 
     button.addEventListener('click', () => {
@@ -229,20 +261,28 @@
       loading.textContent = t.loading;
     }
 
-    applyLanguage('en');
-    langSelect.value = 'en';
-
     /* THEME SWITCHER */
-    const themeToggle = document.getElementById('themeToggle');
-    let isLight = false;
-
     themeToggle.addEventListener('click', () => {
       isLight = !isLight;
+
+      document.body.classList.add("theme-anim");
       document.body.classList.toggle('light', isLight);
-      themeToggle.textContent = isLight ? "Dark Mode" : "Light Mode";
+
+      updateThemeButtonText();
+
+      themeToggle.classList.add("animate");
+      setTimeout(() => themeToggle.classList.remove("animate"), 300);
     });
+
+    function updateThemeButtonText() {
+      const t = translations[langSelect.value];
+      themeToggle.textContent = isLight ? t.themeDark : t.themeLight;
+    }
+
+    applyLanguage('en');
+    langSelect.value = 'en';
+    updateThemeButtonText();
   </script>
 
 </body>
 </html>
-
