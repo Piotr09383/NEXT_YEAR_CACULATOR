@@ -4,132 +4,104 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Next Year Calculator</title>
+  <meta name="description" content="Simple website that calculates the next year based on the input year." />
 
   <style>
-    :root {
-      /* DARK THEME – default */
-      --bg: #0f172a;
-      --container: #1f2937;
-      --text: #e5e7eb;
-      --subtext: #94a3b8;
-      --button-bg: #38bdf8;
-      --button-text: #03131d;
-      --input-bg: #111827;
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      position: relative;
     }
 
-    body.light {
-      /* LIGHT THEME */
-      --bg: #f3f4f6;
-      --container: #ffffff;
-      --text: #111827;
-      --subtext: #4b5563;
-      --button-bg: #0284c7;
-      --button-text: #ffffff;
-      --input-bg: #e5e7eb;
-    }
-
-    body { 
-      font-family: system-ui, sans-serif; 
-      background: var(--bg);
-      color: var(--text);
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      height: 100vh; 
-      margin: 0; 
-      flex-direction: column; 
-      position: relative; 
-      transition: background 0.4s ease, color 0.4s ease;
-    }
-
-    /* Smooth theme transition */
-    body.theme-anim {
-      transition: background 0.4s ease, color 0.4s ease;
-    }
-
-    .container { 
-      background: var(--container);
-      padding: 20px; 
-      border-radius: 12px; 
-      max-width: 400px; 
-      width: 100%; 
-      text-align: center; 
+    .container {
+      background: #1f2937;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
       margin-bottom: 20px;
-      transition: background 0.4s ease;
     }
 
-    input, button, select { 
-      padding: 10px; 
-      border-radius: 8px; 
-      border: none; 
-      margin-top: 10px; 
-      width: 100%; 
+    input, button, select {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+      width: 100%;
       box-sizing: border-box;
       display: block;
     }
 
     input {
-      background: var(--input-bg);
-      color: var(--text);
-      transition: background 0.4s ease, color 0.4s ease;
+      background: #ffffff;
+      color: #000000;
+      font-size: 1em;
     }
 
-    button { 
-      background: var(--button-bg); 
-      color: var(--button-text); 
-      font-weight: bold; 
-      cursor: pointer; 
-      transition: background 0.4s ease, color 0.4s ease;
+    /* Zmiana koloru strzałek w polu number w Chrome/Edge/Opera */
+    input::-webkit-inner-spin-button,
+    input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      height: auto;
+      width: auto;
+      color: #38bdf8; /* Kolor strzałek */
     }
 
-    .result { 
-      margin-top: 15px; 
-      font-size: 1.2em; 
-      opacity: 0;                     
-      transform: scale(0.8);          
-      transition: opacity 0.6s, transform 0.6s;
+    /* Firefox nie wspiera zmiany koloru strzałek, ale można zostawić default */
+    input[type=number] {
+      -moz-appearance: textfield;
     }
 
-    .result.visible { 
-      opacity: 1;                     
-      transform: scale(1);            
+    button {
+      background: #38bdf8;
+      color: #03131d;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .loading { 
-      margin-top: 15px; 
-      font-size: 1em; 
-      color: var(--subtext);
+    .result {
+      margin-top: 15px;
+      font-size: 1.2em;
     }
 
-    .lang-select-container { 
-      position: absolute; 
-      top: 10px; 
-      right: 10px; 
+    .loading {
+      margin-top: 15px;
+      font-size: 1em;
+      color: #94a3b8;
     }
 
-    /* THEME BUTTON */
-    .theme-toggle {
+    footer {
+      font-size: 0.9em;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    .lang-select-container {
       position: absolute;
       top: 10px;
-      left: 10px;
-      background: var(--container);
-      color: var(--text);
-      border: 2px solid var(--subtext);
-      padding: 6px 12px;
+      right: 10px;
+    }
+
+    .lang-select {
+      padding: 5px;
       border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.3s, color 0.3s, border 0.3s, transform 0.3s;
+      border: none;
     }
 
-    /* Button animation */
-    .theme-toggle.animate {
-      transform: scale(1.15) rotate(5deg);
-    }
-
+    /* Animacja kropek ładowania */
     .dots::after {
       content: '';
       display: inline-block;
@@ -146,10 +118,8 @@
     }
   </style>
 </head>
-<body>
 
-  <!-- THEME TOGGLE BUTTON -->
-  <div class="theme-toggle" id="themeToggle">🌙 Dark Mode</div>
+<body>
 
   <div class="lang-select-container">
     <select class="lang-select" id="langSelect">
@@ -167,121 +137,75 @@
   <div class="container" id="calculatorSection">
     <h1 id="title">Next Year</h1>
     <p id="description">Enter a year to see what comes next.</p>
+
     <input id="yearInput" type="number" placeholder="e.g. 2025" />
+
     <button id="calcBtn">Calculate</button>
-    <div id="loading" class="loading" style="display:none;">Loading</div>
+
+    <div id="loading" class="loading" style="display:none;">This may take a moment</div>
     <div id="result" class="result">—</div>
   </div>
 
+  <footer id="footer">
+    Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>
+  </footer>
+
   <script>
     const translations = {
-      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć następny.', button: 'Oblicz', loading: 'Obliczam...', invalid: 'Podaj poprawny rok!', answer: 'Odpowiedź to: ', 
-            themeDark: "🌙 Tryb ciemny", themeLight: "☀️ Tryb jasny" },
-
-      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating...', invalid: 'Please enter a valid year!', answer: 'The answer is: ',
-            themeDark: "🌙 Dark Mode", themeLight: "☀️ Light Mode" },
-
-      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne...', invalid: 'Bitte gib ein gültiges Jahr ein!', answer: 'Die Antwort ist: ',
-            themeDark: "🌙 Dunkelmodus", themeLight: "☀️ Hellmodus" },
-
-      es: { title: 'Próximo Año', description: 'Ingresa un año para ver el siguiente.', button: 'Calcular', loading: 'Calculando...', invalid: 'Introduce un año válido!', answer: 'La respuesta es: ',
-            themeDark: "🌙 Modo oscuro", themeLight: "☀️ Modo claro" },
-
-      fr: { title: 'Année Suivante', description: 'Entrez une année pour voir la suivante.', button: 'Calculer', loading: 'Calcul en cours...', invalid: 'Entrez une année valide!', answer: 'La réponse est : ',
-            themeDark: "🌙 Mode sombre", themeLight: "☀️ Mode clair" },
-
-      hi: { title: 'अगला वर्ष', description: 'अगला वर्ष देखने के लिए वर्ष दर्ज करें।', button: 'गणना करें', loading: 'गणना हो रही...', invalid: 'कृपया सही वर्ष दर्ज करें!', answer: 'उत्तर है: ',
-            themeDark: "🌙 डार्क मोड", themeLight: "☀️ लाइट मोड" },
-
-      zh: { title: '下一年', description: '输入一个年份查看下一年。', button: '计算', loading: '计算中...', invalid: '请输入有效年份！', answer: '答案是：',
-            themeDark: "🌙 黑暗模式", themeLight: "☀️ 亮色模式" },
-
-      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Посчитать', loading: 'Считаю...', invalid: 'Введите корректный год!', answer: 'Ответ: ',
-            themeDark: "🌙 Тёмная тема", themeLight: "☀️ Светлая тема" }
+      pl: { title: 'Następny Rok', description: 'Wpisz rok, aby zobaczyć, jaki będzie następny.', button: 'Oblicz', loading: 'Obliczam... To może chwilę potrwać', invalid: 'Podaj poprawny, dodatni rok!', footer: 'Chcesz wesprzeć lub skontaktować się z twórcą? Napisz na Discord: <strong>drak_yt</strong>' },
+      en: { title: 'Next Year', description: 'Enter a year to see what comes next.', button: 'Calculate', loading: 'Calculating... This may take a moment', invalid: 'Please enter a valid positive year!', footer: 'Want to support or contact the creator? Write on Discord: <strong>drak_yt</strong>' },
+      de: { title: 'Nächstes Jahr', description: 'Gib ein Jahr ein, um das nächste zu sehen.', button: 'Berechnen', loading: 'Berechne... Bitte warten', invalid: 'Bitte gib ein gültiges, positives Jahr ein!', footer: 'Möchten Sie den Entwickler unterstützen oder kontaktieren? Schreiben Sie auf Discord: <strong>drak_yt</strong>' },
+      es: { title: 'Próximo Año', description: 'Ingresa un año para ver el siguiente.', button: 'Calcular', loading: 'Calculando... Esto puede tardar un momento', invalid: '¡Introduce un año positivo válido!', footer: '¿Quieres apoyar o contactar al creador? Escribe en Discord: <strong>drak_yt</strong>' },
+      fr: { title: 'Année Suivante', description: 'Entrez une année pour voir la suivante.', button: 'Calculer', loading: 'Calcul en cours... Cela peut prendre un moment', invalid: 'Veuillez entrer une année positive valide !', footer: 'Vous voulez soutenir ou contacter le créateur ? Écrivez sur Discord : <strong>drak_yt</strong>' },
+      hi: { title: 'अगला वर्ष', description: 'अगला वर्ष देखने के लिए एक वर्ष दर्ज करें।', button: 'गणना करें', loading: 'गणना हो रही है... इसमें कुछ समय लग सकता है', invalid: 'कृपया एक मान्य सकारात्मक वर्ष दर्ज करें!', footer: 'रचनाकार से संपर्क करना चाहते हैं? Discord पर लिखें: <strong>drak_yt</strong>' },
+      zh: { title: '下一年', description: '输入一个年份查看下一年。', button: '计算', loading: '计算中... 可能需要一点时间', invalid: '请输入有效的正年份！', footer: '想支持或联系作者？请在 Discord 上联系：<strong>drak_yt</strong>' },
+      ru: { title: 'Следующий год', description: 'Введите год, чтобы узнать следующий.', button: 'Посчитать', loading: 'Считаю... Это может занять некоторое время', invalid: 'Введите корректный положительный год!', footer: 'Хотите поддержать или связаться с автором? Напишите в Discord: <strong>drak_yt</strong>' }
     };
 
     const langSelect = document.getElementById('langSelect');
-    const themeToggle = document.getElementById('themeToggle');
     const title = document.getElementById('title');
     const description = document.getElementById('description');
     const button = document.getElementById('calcBtn');
     const loading = document.getElementById('loading');
     const result = document.getElementById('result');
+    const footer = document.getElementById('footer');
     const input = document.getElementById('yearInput');
 
-    let lastComputedValue = null;
-    let isLight = false;
-
-    /* Apply translations */
-    langSelect.addEventListener('change', () => {
-      applyLanguage(langSelect.value);
-      updateTranslatedResult();
-      updateThemeButtonText();
-    });
+    langSelect.addEventListener('change', () => { applyLanguage(langSelect.value); });
 
     button.addEventListener('click', () => {
       const year = parseInt(input.value.trim());
-      const t = translations[langSelect.value];
+      const lang = langSelect.value;
+      const t = translations[lang] || translations['en'];
 
       if (isNaN(year) || year < 0) {
         result.textContent = t.invalid;
-        result.classList.add("visible");
         return;
       }
 
-      result.classList.remove("visible");
       loading.style.display = 'block';
       loading.textContent = t.loading;
       loading.classList.add('dots');
-      result.textContent = "—";
+      result.textContent = '—';
 
       setTimeout(() => {
         loading.style.display = 'none';
         loading.classList.remove('dots');
-
-        lastComputedValue = year + 1;
-        updateTranslatedResult();
-
-        result.classList.add("visible");
-      }, 2000);
+        result.textContent = year + 1;
+      }, 3000);
     });
 
-    function updateTranslatedResult() {
-      if (lastComputedValue !== null) {
-        const t = translations[langSelect.value];
-        result.textContent = t.answer + lastComputedValue;
-      }
-    }
-
     function applyLanguage(lang) {
-      const t = translations[lang];
+      const t = translations[lang] || translations['en'];
       title.textContent = t.title;
       description.textContent = t.description;
       button.textContent = t.button;
       loading.textContent = t.loading;
-    }
-
-    /* THEME SWITCHER */
-    themeToggle.addEventListener('click', () => {
-      isLight = !isLight;
-
-      document.body.classList.add("theme-anim");
-      document.body.classList.toggle('light', isLight);
-
-      updateThemeButtonText();
-
-      themeToggle.classList.add("animate");
-      setTimeout(() => themeToggle.classList.remove("animate"), 300);
-    });
-
-    function updateThemeButtonText() {
-      const t = translations[langSelect.value];
-      themeToggle.textContent = isLight ? t.themeDark : t.themeLight;
+      footer.innerHTML = t.footer;
     }
 
     applyLanguage('en');
     langSelect.value = 'en';
-    updateThemeButtonText();
   </script>
 
 </body>
