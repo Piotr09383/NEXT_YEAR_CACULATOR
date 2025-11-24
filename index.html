@@ -14,7 +14,7 @@
   --button-bg-dark: #38bdf8;
   --button-text-dark: #03131d;
 
-  --bg-light: #fafafa; /* zmienione na mniej szare */
+  --bg-light: #fafafa; /* mniej szare */
   --container-light: #ffffff;
   --text-light: #111827;
   --subtext-light: #4b5563;
@@ -256,7 +256,7 @@ function updateResultTranslation() {
 }
 
 function updateThemeButtonText() {
-  const t = translations[langSelect.value];
+  const t = translations[langSelect.value]; // zawsze pobieramy aktualny język
   themeToggle.textContent = isLight ? t.themeDark : t.themeLight;
 }
 
