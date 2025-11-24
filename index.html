@@ -6,10 +6,32 @@
   <title>Next Year Calculator</title>
 
   <style>
+    :root {
+      /* DARK THEME – default */
+      --bg: #0f172a;
+      --container: #1f2937;
+      --text: #e5e7eb;
+      --subtext: #94a3b8;
+      --button-bg: #38bdf8;
+      --button-text: #03131d;
+      --input-bg: #111827;
+    }
+
+    body.light {
+      /* LIGHT THEME */
+      --bg: #f3f4f6;
+      --container: #ffffff;
+      --text: #111827;
+      --subtext: #4b5563;
+      --button-bg: #0284c7;
+      --button-text: #ffffff;
+      --input-bg: #e5e7eb;
+    }
+
     body { 
       font-family: system-ui, sans-serif; 
-      background: #0f172a; 
-      color: #e5e7eb; 
+      background: var(--bg);
+      color: var(--text);
       display: flex; 
       align-items: center; 
       justify-content: center; 
@@ -17,16 +39,18 @@
       margin: 0; 
       flex-direction: column; 
       position: relative; 
+      transition: background 0.3s, color 0.3s;
     }
 
     .container { 
-      background: #1f2937; 
+      background: var(--container);
       padding: 20px; 
       border-radius: 12px; 
       max-width: 400px; 
       width: 100%; 
       text-align: center; 
-      margin-bottom: 20px; 
+      margin-bottom: 20px;
+      transition: background 0.3s;
     }
 
     input, button, select { 
@@ -39,11 +63,18 @@
       display: block;
     }
 
+    input {
+      background: var(--input-bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
     button { 
-      background: #38bdf8; 
-      color: #03131d; 
+      background: var(--button-bg); 
+      color: var(--button-text); 
       font-weight: bold; 
       cursor: pointer; 
+      transition: background 0.3s, color 0.3s;
     }
 
     .result { 
@@ -62,13 +93,28 @@
     .loading { 
       margin-top: 15px; 
       font-size: 1em; 
-      color: #94a3b8; 
+      color: var(--subtext);
     }
 
     .lang-select-container { 
       position: absolute; 
       top: 10px; 
       right: 10px; 
+    }
+
+    /* THEME BUTTON - LEFT TOP */
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--container);
+      color: var(--text);
+      border: 2px solid var(--subtext);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s, color 0.3s, border 0.3s;
     }
 
     .dots::after {
@@ -88,6 +134,9 @@
   </style>
 </head>
 <body>
+
+  <!-- THEME TOGGLE BUTTON -->
+  <div class="theme-toggle" id="themeToggle">Light Mode</div>
 
   <div class="lang-select-container">
     <select class="lang-select" id="langSelect">
@@ -131,17 +180,16 @@
     const result = document.getElementById('result');
     const input = document.getElementById('yearInput');
 
-    let lastComputedValue = null; // 🔥 zapamiętujemy wynik, żeby dało się go przetłumaczyć
+    let lastComputedValue = null;
 
     langSelect.addEventListener('change', () => {
       applyLanguage(langSelect.value);
-      updateTranslatedResult(); // 🔥 tłumacz wynik po zmianie języka
+      updateTranslatedResult();
     });
 
     button.addEventListener('click', () => {
       const year = parseInt(input.value.trim());
-      const lang = langSelect.value;
-      const t = translations[lang];
+      const t = translations[langSelect.value];
 
       if (isNaN(year) || year < 0) {
         result.textContent = t.invalid;
@@ -159,10 +207,10 @@
         loading.style.display = 'none';
         loading.classList.remove('dots');
 
-        lastComputedValue = year + 1;             // zapamiętaj
-        updateTranslatedResult();                 // tłumacz wynik
+        lastComputedValue = year + 1;
+        updateTranslatedResult();
 
-        result.classList.add("visible");          // animacja fade-in
+        result.classList.add("visible");
       }, 2000);
     });
 
@@ -183,7 +231,18 @@
 
     applyLanguage('en');
     langSelect.value = 'en';
+
+    /* THEME SWITCHER */
+    const themeToggle = document.getElementById('themeToggle');
+    let isLight = false;
+
+    themeToggle.addEventListener('click', () => {
+      isLight = !isLight;
+      document.body.classList.toggle('light', isLight);
+      themeToggle.textContent = isLight ? "Dark Mode" : "Light Mode";
+    });
   </script>
 
 </body>
 </html>
+
