@@ -256,14 +256,16 @@ function updateResultTranslation() {
 }
 
 function updateThemeButtonText() {
-  const t = translations[langSelect.value]; // zawsze pobieramy aktualny język
+  const t = translations[langSelect.value];
   themeToggle.textContent = isLight ? t.themeDark : t.themeLight;
 }
 
+// zmiana języka
 langSelect.addEventListener('change', () => {
   applyLanguage(langSelect.value);
 });
 
+// kalkulator
 button.addEventListener('click', () => {
   const year = parseInt(input.value.trim());
   const t = translations[langSelect.value];
@@ -286,6 +288,7 @@ button.addEventListener('click', () => {
   }, 2000);
 });
 
+// przełącznik motywu
 themeToggle.addEventListener('click', () => {
   isLight = !isLight;
   document.body.classList.toggle("light", isLight);
@@ -294,8 +297,11 @@ themeToggle.addEventListener('click', () => {
   updateThemeButtonText();
 });
 
-applyLanguage('en');
-langSelect.value = 'en';
+// inicjalizacja przy starcie
+langSelect.value = 'en'; // ustawienie języka
+applyLanguage('en');      // poprawne od razu
+isLight = false;          // domyślnie ciemny
+updateThemeButtonText();  // tekst przycisku od razu poprawny
 </script>
 
 </body>
